@@ -2,11 +2,54 @@ class spiel{
     constructor(){
         this.zugNr = 0;
         this.brett;
+        this.selectedFeld = "";
         this.p1 = new spieler("Weiß", true)
         this.p2 = new spieler("Schwarz", false)
     }
     neuesSpiel(){
         this.brett = new brett()
+        this.updateFleder();
+    }
+    updateFleder(){
+        for (let z = 1; z <= 8; z++){
+            for (let s = "A"; s <= "H"; s = String.fromCharCode(s.charCodeAt(0) + 1)){
+                this.brett.spielfeld[s+z].update()
+            }
+        }
+    }
+    selectFeld(pos){
+        console.log("pos = " + pos + "   erlaubteFelder = " + this.brett.spielfeld[pos].erlaubteFelder);
+
+        if (this.selectedFeld == "" && !(this.brett.spielfeld[pos].figur instanceof Leer)){
+            this.selectedFeld = pos;
+            console.log("Feld " + pos + " wurde selected");
+
+            this.brett.spielfeld[pos].feldButton.classList.add("selected");
+            for (let x in this.brett.spielfeld[pos].erlaubteFelder){
+                let eFeld = this.brett.spielfeld[pos].erlaubteFelder[x];
+                this.brett.spielfeld[eFeld].feldButton.classList.add("validMove");
+            }
+        }
+        else if (this.selectedFeld != "" && this.brett.spielfeld[this.selectedFeld].erlaubteFelder.find((str) => str === pos)){
+            this.brett.spielfeld[pos].figur = this.brett.spielfeld[this.selectedFeld].figur;
+            this.brett.spielfeld[this.selectedFeld].figur = new Leer;
+            this.updateFleder();
+            
+            this.brett.spielfeld[this.selectedFeld].feldButton.classList.remove("selected");
+            for (let eFeld in this.brett.spielfeld){
+                this.brett.spielfeld[eFeld].feldButton.classList.remove("validMove");
+            }
+            this.selectedFeld = "";
+        }
+        else{
+            console.log("Selection wurde gelöscht");
+
+            this.brett.spielfeld[this.selectedFeld].feldButton.classList.remove("selected");
+            for (let eFeld in this.brett.spielfeld){
+                this.brett.spielfeld[eFeld].feldButton.classList.remove("validMove");
+            }
+            this.selectedFeld = "";
+        }  
     }
 }
 
@@ -62,6 +105,7 @@ class brett{
 class feld{
     constructor(pos){
         this.pos = pos
+        this.erlaubteFelder = [];
         this.feldFarbe = ((pos.charCodeAt(0) + pos.charCodeAt(1)) % 2 == 0) ? "black" : "white";
         this.feldButton = document.createElement("button");
         this.feldButton.className = "feld " + this.feldFarbe;
@@ -96,8 +140,13 @@ class feld{
             default:
                 this.figur = new Leer();
         }
-        
+
         this.feldButton.innerHTML = this.figur.darstellung;
+        this.feldButton.addEventListener("click", function(){ game.selectFeld(pos); });
         document.getElementById("spielfeld").appendChild(this.feldButton);
+    }
+    update(){
+        this.feldButton.innerHTML = this.figur.darstellung;
+        this.erlaubteFelder = this.figur.erlaubteFelderBerechnen(this.pos);
     }
 }

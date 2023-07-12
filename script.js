@@ -1,5 +1,6 @@
-let a1;
-function test(){
-    a1 = new brett();
+let game;
+function newGame(){
+    game = new spiel();
+    game.neuesSpiel();
     document.getElementById("newGameButton").remove();
 }
