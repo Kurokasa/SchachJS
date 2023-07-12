@@ -3,10 +3,13 @@
 }
 .spielfeld{
     display: grid;
-    grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px;
-    grid-template-rows: 50px 50px 50px 50px 50px 50px 50px 50px;
+    grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px;
+    grid-template-rows: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px;
 }
 .feld{
     font-size: 35px;
     border: none;
+}
+.rand{
+    background-color: beige;
 }
