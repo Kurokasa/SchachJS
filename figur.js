@@ -4,7 +4,7 @@ class Figur{
             let darstellung;
         }
         erlaubteFelderBerechnen(){
-            return ["00"];
+            return [];
         }
 
 }

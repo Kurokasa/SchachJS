@@ -8,9 +8,10 @@ class spiel{
     }
     neuesSpiel(){
         this.brett = new brett()
-        this.updateFleder();
+        this.update();
     }
-    updateFleder(){
+    update(){
+        game.zugNr++;
         for (let z = 1; z <= 8; z++){
             for (let s = "A"; s <= "H"; s = String.fromCharCode(s.charCodeAt(0) + 1)){
                 this.brett.spielfeld[s+z].update()
@@ -20,27 +21,35 @@ class spiel{
     selectFeld(pos){
         console.log("pos = " + pos + "   erlaubteFelder = " + this.brett.spielfeld[pos].erlaubteFelder);
 
+        // Auswahl der zu bewegenden Figur
         if (this.selectedFeld == "" && !(this.brett.spielfeld[pos].figur instanceof Leer)){
-            this.selectedFeld = pos;
-            console.log("Feld " + pos + " wurde selected");
+            if (game.zugNr % 2 == 0 ^ this.brett.spielfeld[pos].figur.figurFarbe == "weiß"){
+                this.selectedFeld = pos;
+                console.log("Feld " + pos + " wurde selected");
 
-            this.brett.spielfeld[pos].feldButton.classList.add("selected");
-            for (let x in this.brett.spielfeld[pos].erlaubteFelder){
-                let eFeld = this.brett.spielfeld[pos].erlaubteFelder[x];
-                this.brett.spielfeld[eFeld].feldButton.classList.add("validMove");
+                this.brett.spielfeld[pos].feldButton.classList.add("selected");
+                for (let x in this.brett.spielfeld[pos].erlaubteFelder){
+                    let eFeld = this.brett.spielfeld[pos].erlaubteFelder[x];
+                    this.brett.spielfeld[eFeld].feldButton.classList.add("validMove");
+                }
             }
+            else
+                window.alert("It is not your Turn");
+            
         }
         else if (this.selectedFeld != "" && this.brett.spielfeld[this.selectedFeld].erlaubteFelder.find((str) => str === pos)){
             this.brett.spielfeld[pos].figur = this.brett.spielfeld[this.selectedFeld].figur;
             this.brett.spielfeld[this.selectedFeld].figur = new Leer;
-            this.updateFleder();
+            this.update();
             
             this.brett.spielfeld[this.selectedFeld].feldButton.classList.remove("selected");
             for (let eFeld in this.brett.spielfeld){
                 this.brett.spielfeld[eFeld].feldButton.classList.remove("validMove");
             }
             this.selectedFeld = "";
+            
         }
+        // Selektion aufheben
         else{
             console.log("Selection wurde gelöscht");
             if (this.selectedFeld != ""){
