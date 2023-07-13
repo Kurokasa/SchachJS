@@ -25,7 +25,6 @@ class spiel{
         if (this.selectedFeld == "" && !(this.brett.spielfeld[pos].figur instanceof Leer)){
             if (game.zugNr % 2 == 0 ^ this.brett.spielfeld[pos].figur.figurFarbe == "weiß"){
                 this.selectedFeld = pos;
-                console.log("Feld " + pos + " wurde selected");
 
                 this.brett.spielfeld[pos].feldButton.classList.add("selected");
                 for (let x in this.brett.spielfeld[pos].erlaubteFelder){
@@ -51,7 +50,6 @@ class spiel{
         }
         // Selektion aufheben
         else{
-            console.log("Selection wurde gelöscht");
             if (this.selectedFeld != ""){
                 this.brett.spielfeld[this.selectedFeld].feldButton.classList.remove("selected");
                 for (let eFeld in this.brett.spielfeld){
