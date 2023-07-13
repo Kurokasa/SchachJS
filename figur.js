@@ -17,12 +17,27 @@ class Bauer extends Figur{
         }
         erlaubteFelderBerechnen(pos) {
             let erlaubteFelder = [];
+            // Check ob 1 Feld weitergehen möglich ist
             if (game.brett.spielfeld[String.fromCharCode(pos.charCodeAt(0)) + String.fromCharCode(pos.charCodeAt(1) + ((this.figurFarbe == "weiß") ? 1 : -1))].figur instanceof Leer){
                 erlaubteFelder.push(String.fromCharCode(pos.charCodeAt(0)) + String.fromCharCode(pos.charCodeAt(1) + ((this.figurFarbe == "weiß") ? 1 : -1)));
-                if ((String.fromCharCode(pos.charCodeAt(1)) == 2 || String.fromCharCode(pos.charCodeAt(1) == 7)) && game.brett.spielfeld[String.fromCharCode(pos.charCodeAt(0)) + String.fromCharCode(pos.charCodeAt(1) + ((this.figurFarbe == "weiß") ? 2 : -2))].figur instanceof Leer)
-                erlaubteFelder.push(String.fromCharCode(pos.charCodeAt(0)) + String.fromCharCode(pos.charCodeAt(1) + ((this.figurFarbe == "weiß") ? 2 : -2)));
+                // Check ob 2 Felder weitergehen möglich ist
+                if ((String.fromCharCode(pos.charCodeAt(1)) == 2 || (String.fromCharCode(pos.charCodeAt(1)) == 7)) && game.brett.spielfeld[String.fromCharCode(pos.charCodeAt(0)) + String.fromCharCode(pos.charCodeAt(1) + ((this.figurFarbe == "weiß") ? 2 : -2))].figur instanceof Leer)
+                    erlaubteFelder.push(String.fromCharCode(pos.charCodeAt(0)) + String.fromCharCode(pos.charCodeAt(1) + ((this.figurFarbe == "weiß") ? 2 : -2)));
             }  
-            
+            // Check ob rechts ein gültiges Feld zum schmeißen ist
+            if (pos.charCodeAt(0) + 1 <= 72 && ((this.figurFarbe == "weiß") ? 1 : -1) <= 56 && (pos.charCodeAt(1) + ((this.figurFarbe == "weiß") ? 1 : -1)) >= 49){
+                // Check ob rechts eine Figur zum schmeißen steht
+                if (!(game.brett.spielfeld[String.fromCharCode(pos.charCodeAt(0) + 1) + String.fromCharCode(pos.charCodeAt(1) + ((this.figurFarbe == "weiß") ? 1 : -1))].figur instanceof Leer)){
+                    erlaubteFelder.push(String.fromCharCode(pos.charCodeAt(0) + 1) + String.fromCharCode(pos.charCodeAt(1) + ((this.figurFarbe == "weiß") ? 1 : -1)));
+                }
+            }
+            // Check ob links ein gültiges Feld zum schmeißen ist
+            if (pos.charCodeAt(0) - 1 >= 65 && ((this.figurFarbe == "weiß") ? 1 : -1) <= 56 && (pos.charCodeAt(1) + ((this.figurFarbe == "weiß") ? 1 : -1)) >= 49){
+                // Check ob rechts eine Figur zum schmeißen steht
+                if (!(game.brett.spielfeld[String.fromCharCode(pos.charCodeAt(0) - 1) + String.fromCharCode(pos.charCodeAt(1) + ((this.figurFarbe == "weiß") ? 1 : -1))].figur instanceof Leer)){
+                    erlaubteFelder.push(String.fromCharCode(pos.charCodeAt(0) - 1) + String.fromCharCode(pos.charCodeAt(1) + ((this.figurFarbe == "weiß") ? 1 : -1)));
+                }
+            }
             return erlaubteFelder;
         }
 }
