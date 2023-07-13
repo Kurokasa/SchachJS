@@ -141,10 +141,10 @@ class feld{
                         this.figur = new Laeufer(pos);
                         break;
                     case 68: // -> D
-                        this.figur = new Koenig(pos);
+                        this.figur = new Dame(pos);
                         break;
                     case 69: // -> E
-                        this.figur = new Dame(pos);
+                        this.figur = new Koenig(pos);
                 }
                 break;
             default:
