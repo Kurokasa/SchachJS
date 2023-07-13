@@ -43,12 +43,13 @@ class spiel{
         }
         else{
             console.log("Selection wurde gelöscht");
-
-            this.brett.spielfeld[this.selectedFeld].feldButton.classList.remove("selected");
-            for (let eFeld in this.brett.spielfeld){
-                this.brett.spielfeld[eFeld].feldButton.classList.remove("validMove");
+            if (this.selectedFeld != ""){
+                this.brett.spielfeld[this.selectedFeld].feldButton.classList.remove("selected");
+                for (let eFeld in this.brett.spielfeld){
+                    this.brett.spielfeld[eFeld].feldButton.classList.remove("validMove");
+                }
+                this.selectedFeld = "";
             }
-            this.selectedFeld = "";
         }  
     }
 }
